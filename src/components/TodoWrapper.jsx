@@ -5,7 +5,11 @@ import { v4 as uuidv4 } from 'uuid';
 import EditTodoForm from './EditTodoForm';
 
 const TodoWrapper = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const localTodosValue = localStorage.getItem('ITEMS');
+    if (localTodosValue == null) return [];
+    return JSON.parse(localTodosValue);
+  });
 
   const addTodo = (todo) => {
     setTodos([
@@ -43,7 +47,7 @@ const TodoWrapper = () => {
   };
 
   useEffect(() => {
-    console.log(todos); // This will log the updated state of todos
+    localStorage.setItem('ITEMS', JSON.stringify(todos));
   }, [todos]);
 
   return (
